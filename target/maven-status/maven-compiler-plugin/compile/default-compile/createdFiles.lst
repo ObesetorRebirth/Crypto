@@ -1,0 +1,4 @@
+com\example\Crypto\CryptoApplication.class
+com\example\Crypto\Entities\Crypto.class
+com\example\Crypto\Entities\User.class
+com\example\Crypto\Entities\Transaction.class
