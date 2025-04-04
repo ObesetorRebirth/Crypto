@@ -1,4 +1,8 @@
 package com.example.Crypto.DTOs;
 
-public class CryptoDTO {
+import jakarta.validation.constraints.NotNull;
+
+@NotNull
+public record CryptoDTO (Long id,String cryptoName,String base64)
+{
 }

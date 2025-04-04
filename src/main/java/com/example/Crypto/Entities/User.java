@@ -15,15 +15,15 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long id;
 
     @NotNull
     @Column(name = "username")
     private String username;
 
     @NotNull
-    @Column(name = "account_balance")
-    private float accountBalance;
+    @Column(name = "balance")
+    private float balance;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonIgnore
@@ -31,4 +31,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCrypto> holdings;
+
+    @PrePersist
+    public void setDefaultBalance() {
+        if (this.balance == 0) {
+            this.balance = 10000.0f;
+        }
+    }
 }

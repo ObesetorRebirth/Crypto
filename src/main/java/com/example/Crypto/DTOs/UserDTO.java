@@ -1,4 +1,6 @@
 package com.example.Crypto.DTOs;
 
-public class UserDTO {
-}
+import jakarta.validation.constraints.NotNull;
+
+@NotNull
+public record UserDTO (String username, float balance){}

@@ -13,7 +13,7 @@ public class Crypto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long crypto_id;
+    private Long id;
 
     @Column(name = "crypto_name")
     private String cryptoName;

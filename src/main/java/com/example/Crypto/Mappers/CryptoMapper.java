@@ -1,4 +1,4 @@
 package com.example.Crypto.Mappers;
 
-public class CryptoMapper {
+public interface CryptoMapper {
 }
