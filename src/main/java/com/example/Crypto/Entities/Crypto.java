@@ -18,8 +18,11 @@ public class Crypto {
     @Column(name = "crypto_name")
     private String cryptoName;
 
-    @Column(name = "images")
-    private String symbol64;
+    @Column(name = "symbol")
+    private String symbol;
+
+    @Column(name = "current_price")
+    private Float currentPrice;
 
     @OneToMany(mappedBy = "crypto",cascade = CascadeType.ALL)
     @JsonIgnore

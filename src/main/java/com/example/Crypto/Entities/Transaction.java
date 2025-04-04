@@ -32,7 +32,7 @@ public class Transaction {
     private Long quantity;
 
     @Column(name = "price_at_transaction")
-    private float priceAtTransaction;
+    private Float priceAtTransaction;
 
     @Column(name="total_amount")
     private Long totalAmount;

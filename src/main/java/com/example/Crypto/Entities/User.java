@@ -23,7 +23,7 @@ public class User {
 
     @NotNull
     @Column(name = "balance")
-    private float balance;
+    private Float balance;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonIgnore
