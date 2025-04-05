@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
     @Override
-    public Page<User> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable);
     Optional<User> findUserByUsername(String username);
     Long findBalanceByUserId(Long userId);
     void setBalance(Long userId,float newBalance);
