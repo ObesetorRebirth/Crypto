@@ -15,13 +15,16 @@ public class UserCrypto {
     private UserCryptoId id;
 
     @ManyToOne
+    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
+    @MapsId("cryptoId")
     @JoinColumn(name = "crypto_id", nullable = false)
     private Crypto crypto;
 
     @Column(name = "quantity", nullable = false)
     private Double quantity;
+
 }

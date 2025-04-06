@@ -8,9 +8,9 @@ import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CryptoMapper {
-    @Mapping(target = "cryptoName",source = "cryptoDto.cryptoname")
-    @Mapping(target = "symbol",source = "cryptoDto.symbol")
-    @Mapping(target = "currentPrice",source = "cryptoDto.currentPrice")
+    @Mapping(target = "cryptoName",source = "cryptoDTO.cryptoName")
+    @Mapping(target = "symbol",source = "cryptoDTO.symbol")
+    @Mapping(target = "currentPrice",source = "cryptoDTO.currentPrice")
     @Mapping(target = "id",source = "cryptoId")
     Crypto convertDtoToEntity(CryptoDTO cryptoDTO, Long cryptoId);
 
