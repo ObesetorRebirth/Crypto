@@ -24,6 +24,14 @@ public class UserCryptoService {
     private final CryptoRepository cryptoRepository;
 
     public void addToHoldings(Long userId,Long cryptoId, Double quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        if (holdingExists(userId, cryptoId)) {
+            throw new IllegalStateException("Holding already exists");
+        }
+
         UserCryptoId id = new UserCryptoId(userId,cryptoId);
 
         UserCrypto userCrypto = new UserCrypto();
@@ -34,14 +42,18 @@ public class UserCryptoService {
         userCryptoRepository.save(userCrypto);
     }
     public void subtractFromHoldings(Long userId,Long cryptoId,Double quantityToSubtract) {
+        if (quantityToSubtract <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
         UserCrypto userCrypto = userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
                 .orElseThrow(() -> new EntityNotFoundException("UserCrypto with userId " + userId + " and cryptoId " + cryptoId + " not found"));
 
         Double quantity = userCrypto.getQuantity();
 
-        if(!DoubleComparator(quantity, quantityToSubtract ))
+        if(!DoubleComparator(quantity, quantityToSubtract))
         {
-            throw new ArithmeticException("You can't sell more than you currently own");
+            throw new ArithmeticException("You cannot sell more than you currently own");
         }
 
         double newBalance = quantity - quantityToSubtract;
@@ -61,14 +73,31 @@ public class UserCryptoService {
                 .orElseThrow(() -> new EntityNotFoundException("Holding not found for userId: " + userId + " and cryptoId: " + cryptoId));
     }
 
-    //util
-    private boolean DoubleComparator(double a, double b) {
-        boolean isBigger = false;
-        double c = a - b;
-        if(c >= 0)
-        {
-            isBigger = true;
+    public void updateHolding(Long userId, Long cryptoId, Double quantityToAdd) {
+        if (quantityToAdd <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
-        return isBigger;
+
+        if(!holdingExists(userId,cryptoId)) {
+            addToHoldings(userId,cryptoId,quantityToAdd);
+        }
+
+        UserCrypto userCrypto = userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
+                .orElseThrow(() -> new EntityNotFoundException("UserCrypto with userId " + userId + " and cryptoId " + cryptoId + " not found"));
+
+        Double balance = userCrypto.getQuantity();
+        Double newBalance = quantityToAdd + balance;
+
+        userCrypto.setQuantity(newBalance);
+        userCryptoRepository.save(userCrypto);
+    }
+
+    //util
+    public boolean holdingExists(Long userId,Long cryptoId){
+         return userCryptoRepository.findByUserIdAndCryptoId(userId,cryptoId).isPresent();
+    }
+
+    private boolean DoubleComparator(double d1, double d2) {
+        return Double.compare(d1,d2) >= 0;
     }
 }
