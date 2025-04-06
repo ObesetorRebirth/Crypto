@@ -1,6 +1,7 @@
 package com.example.Crypto.Services;
 
 import com.example.Crypto.CompositeKeys.UserCryptoId;
+import com.example.Crypto.DTOs.UserCryptoDTO;
 import com.example.Crypto.Entities.IntermediaryEntities.UserCrypto;
 import com.example.Crypto.Mappers.UserCryptoMapper;
 import com.example.Crypto.Repositories.CryptoRepository;
@@ -65,11 +66,15 @@ public class UserCryptoService {
         }
     }
 
-    public List<UserCrypto> getHoldingsByUser(Long userId) {
-        return userCryptoRepository.findByUserId(userId);
+    public List<UserCryptoDTO> getHoldingsByUser(Long userId) {
+        return userCryptoRepository.findByUserId(userId)
+                .stream()
+                .map(userCryptoMapper::ConvertEntityToDto)
+                .toList();
     }
-    public UserCrypto getHolding(Long userId, Long cryptoId) {
+    public UserCryptoDTO getHolding(Long userId, Long cryptoId) {
         return userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
+                .map(userCryptoMapper::ConvertEntityToDto)
                 .orElseThrow(() -> new EntityNotFoundException("Holding not found for userId: " + userId + " and cryptoId: " + cryptoId));
     }
 

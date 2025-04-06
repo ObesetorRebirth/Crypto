@@ -1,6 +1,7 @@
 package com.example.Crypto.Configs.WebSocket;
 
 import com.example.Crypto.DTOs.KrakenDTO;
+import com.example.Crypto.Services.CryptoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -11,6 +12,7 @@ import java.net.URISyntaxException;
 
 @Component
 public class KrakenWebSocket extends WebSocketClient {
+
 
     public KrakenWebSocket() throws URISyntaxException {
         super(new URI("wss://ws.kraken.com/v2"));
@@ -45,7 +47,8 @@ public class KrakenWebSocket extends WebSocketClient {
                 String symbol = ticker.symbol;
                 Float price = Float.parseFloat(ticker.data.price);
 
-                // Call a service to update the DB
+                 //Call a service to update the DB
+
                 //cryptoService.updateCryptoPrice(symbol, price);
             }
 
