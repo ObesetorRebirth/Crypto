@@ -33,4 +33,7 @@ public class Crypto {
     @OneToMany(mappedBy = "crypto",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCrypto> holdings;
 
+    public String getCryptoName() {
+        return cryptoName;
+    }
 }
