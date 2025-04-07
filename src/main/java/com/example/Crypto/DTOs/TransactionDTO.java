@@ -1,11 +1,13 @@
 package com.example.Crypto.DTOs;
 
+import com.example.Crypto.Entities.Transaction;
+
 import java.time.LocalDateTime;
 
 public record TransactionDTO (
-        String transactionType,
-        Long quantity,
-        float priceAtTransaction,
+        Transaction.TransactionType transactionType,
+        Double quantity,
+        Double priceAtTransaction,
         Long totalAmount,
         LocalDateTime transactionDate){
 }

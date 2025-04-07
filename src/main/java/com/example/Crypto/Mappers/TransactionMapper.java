@@ -14,7 +14,7 @@ public interface TransactionMapper {
     @Mapping(target = "priceAtTransaction",source = "transactionDTO.priceAtTransaction")
     @Mapping(target = "totalAmount",source = "transactionDTO.totalAmount")
     @Mapping(target = "transactionDate",source = "transactionDTO.transactionDate")
-    Transaction convertDtoToEntity(TransactionDTO transactionDTO);
+    Transaction convertDtoToEntity(TransactionDTO transactionDTO,Long transactionId);
 
     @Mapping(target = "transactionType", source = "transaction.transactionType")
     @Mapping(target = "quantity", source = "transaction.quantity")
