@@ -67,7 +67,7 @@ public class UserCryptoService {
     }
 
     public List<UserCryptoDTO> getHoldingsByUser(Long userId) {
-        return userCryptoRepository.findByUserId(userId)
+        return userCryptoRepository.findAllByUserId(userId)
                 .stream()
                 .map(userCryptoMapper::ConvertEntityToDto)
                 .toList();
@@ -98,7 +98,12 @@ public class UserCryptoService {
     }
 
     public void removeHoldings(Long userId){
-        
+        List<UserCrypto> holdings = userCryptoRepository.findAllByUserId(userId);
+
+        if (holdings.isEmpty()) {
+            return;
+        }
+        userCryptoRepository.deleteAll(holdings);
     }
 
     //util

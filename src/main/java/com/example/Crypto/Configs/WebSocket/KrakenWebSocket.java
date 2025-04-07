@@ -3,8 +3,10 @@ package com.example.Crypto.Configs.WebSocket;
 import com.example.Crypto.DTOs.KrakenDTO;
 import com.example.Crypto.Services.CryptoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -13,9 +15,17 @@ import java.net.URISyntaxException;
 @Component
 public class KrakenWebSocket extends WebSocketClient {
 
+    private final CryptoService cryptoService;
 
-    public KrakenWebSocket() throws URISyntaxException {
+    @Autowired
+    public KrakenWebSocket(CryptoService cryptoService) throws URISyntaxException {
         super(new URI("wss://ws.kraken.com/v2"));
+        this.cryptoService = cryptoService;
+    }
+
+    @PostConstruct
+    public void init() {
+        this.connect(); // Now we connect after cryptoService is injected
     }
 
     @Override
@@ -47,9 +57,7 @@ public class KrakenWebSocket extends WebSocketClient {
                 String symbol = ticker.symbol;
                 Float price = Float.parseFloat(ticker.data.price);
 
-                 //Call a service to update the DB
-
-                //cryptoService.updateCryptoPrice(symbol, price);
+                cryptoService.updateCryptoPrice(symbol, price);
             }
 
         } catch (Exception e) {

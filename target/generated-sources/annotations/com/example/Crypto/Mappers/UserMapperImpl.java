@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-06T11:53:01+0300",
+    date = "2025-04-08T00:10:25+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.5 (Eclipse Adoptium)"
 )
 @Component
@@ -37,12 +37,10 @@ public class UserMapperImpl implements UserMapper {
         }
 
         String username = null;
-        float balance = 0.0f;
+        Double balance = null;
 
         username = user.getUsername();
-        if ( user.getBalance() != null ) {
-            balance = user.getBalance();
-        }
+        balance = user.getBalance();
 
         UserDTO userDTO = new UserDTO( username, balance );
 

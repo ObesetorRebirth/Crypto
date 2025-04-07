@@ -81,9 +81,19 @@ public class TransactionService {
         createTransaction(userId,cryptoId,Transaction.TransactionType.Selling,quantity, Double.valueOf(price));
     }
 
+    public List<Transaction> getUserTransactionsByType(Long userId,Transaction.TransactionType transactionType){
+        List<Transaction> Transactions = transactionRepository.findAllByUserIdAndTransactionType(userId, transactionType);
+        return Transactions;
+    }
+
     public List<Transaction> getUserTransactions(Long userId){
         List<Transaction> transactions =transactionRepository.findAllTransactionsByUserId(userId);
         return transactions;
+    }
+
+    public Transaction getTransactionById(Long transactionId) {
+        return transactionRepository.findTransactionById(transactionId)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction ID:" + transactionId));
     }
 
     public Double calculateProfitOrLoss(Transaction transaction){

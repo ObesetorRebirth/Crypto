@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserCryptoRepository extends JpaRepository<UserCrypto, UserCryptoId> {
 
     Optional<UserCrypto> findByUserIdAndCryptoId(Long userId, Long cryptoId);
-    List<UserCrypto> findByUserId(Long userId);
+    List<UserCrypto> findAllByUserId(Long userId);
 }

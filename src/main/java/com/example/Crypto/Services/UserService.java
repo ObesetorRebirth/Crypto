@@ -51,6 +51,7 @@ public class UserService {
     private User saveUserToDatabase(UserDTO userDTO, Long userId)
     {
         var user = userMapper.convertDtoToEntity(userDTO, userId);
+        user.setBalance(10000.0);
         return userRepository.saveAndFlush(user);
     }
 

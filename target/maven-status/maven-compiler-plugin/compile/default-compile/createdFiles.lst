@@ -1,7 +1,9 @@
+com\example\Crypto\DTOs\UserCryptoDTO.class
 com\example\Crypto\Entities\IntermediaryEntities\UserCrypto.class
 com\example\Crypto\Services\UserCryptoService.class
 com\example\Crypto\DTOs\TransactionDTO.class
 com\example\Crypto\Mappers\CryptoMapper.class
+com\example\Crypto\Mappers\UserCryptoMapper.class
 com\example\Crypto\Configs\WebSocketStarter.class
 com\example\Crypto\Mappers\UserMapper.class
 com\example\Crypto\DTOs\KrakenDTO.class
@@ -23,9 +25,12 @@ com\example\Crypto\Entities\User.class
 com\example\Crypto\Entities\Transaction$TransactionType.class
 com\example\Crypto\Services\UserService.class
 com\example\Crypto\Configs\WebSocket\KrakenWebSocket.class
+com\example\Crypto\Mappers\TransactionMapperImpl.class
 com\example\Crypto\Controllers\CryptoController.class
+com\example\Crypto\Mappers\UserCryptoMapperImpl.class
 com\example\Crypto\Repositories\UserRepository.class
 com\example\Crypto\Repositories\CryptoRepository.class
 com\example\Crypto\Controllers\TransactionController.class
 com\example\Crypto\Repositories\TransactionRepository.class
 com\example\Crypto\Controllers\UserController.class
+com\example\Crypto\Controllers\UserCryptoController.class

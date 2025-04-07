@@ -9,7 +9,6 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface TransactionMapper {
     @Mapping(target = "transactionType",source = "transactionDTO.transactionType")
-    @Mapping(target = "id",source = "transactionDTO.id")
     @Mapping(target = "quantity",source = "transactionDTO.quantity")
     @Mapping(target = "priceAtTransaction",source = "transactionDTO.priceAtTransaction")
     @Mapping(target = "totalAmount",source = "transactionDTO.totalAmount")
@@ -18,7 +17,6 @@ public interface TransactionMapper {
 
     @Mapping(target = "transactionType", source = "transaction.transactionType")
     @Mapping(target = "quantity", source = "transaction.quantity")
-    @Mapping(target = "id",source = "transaction.id")
     @Mapping(target = "priceAtTransaction", source = "transaction.priceAtTransaction")
     @Mapping(target = "totalAmount", source = "transaction.totalAmount")
     @Mapping(target = "transactionDate", source = "transaction.transactionDate")

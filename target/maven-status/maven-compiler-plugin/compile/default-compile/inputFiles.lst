@@ -5,10 +5,12 @@ D:\Crypto\src\main\java\com\example\Crypto\Configs\WebSocketStarter.java
 D:\Crypto\src\main\java\com\example\Crypto\Controllers\CryptoController.java
 D:\Crypto\src\main\java\com\example\Crypto\Controllers\TransactionController.java
 D:\Crypto\src\main\java\com\example\Crypto\Controllers\UserController.java
+D:\Crypto\src\main\java\com\example\Crypto\Controllers\UserCryptoController.java
 D:\Crypto\src\main\java\com\example\Crypto\CryptoApplication.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\CryptoDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\KrakenDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\TransactionDTO.java
+D:\Crypto\src\main\java\com\example\Crypto\DTOs\UserCryptoDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\UserDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\Entities\Crypto.java
 D:\Crypto\src\main\java\com\example\Crypto\Entities\IntermediaryEntities\UserCrypto.java
@@ -16,6 +18,7 @@ D:\Crypto\src\main\java\com\example\Crypto\Entities\Transaction.java
 D:\Crypto\src\main\java\com\example\Crypto\Entities\User.java
 D:\Crypto\src\main\java\com\example\Crypto\Mappers\CryptoMapper.java
 D:\Crypto\src\main\java\com\example\Crypto\Mappers\TransactionMapper.java
+D:\Crypto\src\main\java\com\example\Crypto\Mappers\UserCryptoMapper.java
 D:\Crypto\src\main\java\com\example\Crypto\Mappers\UserMapper.java
 D:\Crypto\src\main\java\com\example\Crypto\Repositories\CryptoRepository.java
 D:\Crypto\src\main\java\com\example\Crypto\Repositories\TransactionRepository.java

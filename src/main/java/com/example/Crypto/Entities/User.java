@@ -32,10 +32,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCrypto> holdings;
 
-    @PrePersist
-    public void setDefaultBalance() {
-        if (this.balance == 0) {
-            this.balance = 10000.0f;
-        }
-    }
 }
