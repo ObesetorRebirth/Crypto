@@ -97,6 +97,10 @@ public class UserCryptoService {
         userCryptoRepository.save(userCrypto);
     }
 
+    public void removeHoldings(Long userId){
+        
+    }
+
     //util
     public boolean holdingExists(Long userId,Long cryptoId){
          return userCryptoRepository.findByUserIdAndCryptoId(userId,cryptoId).isPresent();

@@ -11,6 +11,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Override
     Page<User> findAll(Pageable pageable);
     Optional<User> findUserByUsername(String username);
-    Long findBalanceByUserId(Long userId);
+    Double findBalanceByUserId(Long userId);
     void setBalance(Long userId,float newBalance);
+
 }

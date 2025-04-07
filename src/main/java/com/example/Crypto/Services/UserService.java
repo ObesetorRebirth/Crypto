@@ -21,7 +21,7 @@ public class UserService {
         return getUser(userId);
     }
 
-    public User CreateUser(UserDTO userDTO){
+    public User createUser(UserDTO userDTO){
         var username = userDTO.username();
 
         var userFoundByName = userRepository.findUserByUsername(username);
@@ -31,7 +31,7 @@ public class UserService {
         return saveUserToDatabase(userDTO,null);
     }
 
-    public Long getAccountBalance(Long userId) {
+    public Double getUserBalance(Long userId) {
         if(!userRepository.existsById(userId))
             throw new EntityNotFoundException("Account ID:" + userId);
         return userRepository.findBalanceByUserId(userId);
@@ -43,7 +43,7 @@ public class UserService {
         userRepository.setBalance(userId,newBalance);
     }
 
-    public void ResetAccountBalance(Long userId){
+    public void resetAccountBalance(Long userId){
         userRepository.setBalance(userId,10000.0f);
     }
 
