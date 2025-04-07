@@ -14,4 +14,5 @@ public interface CryptoRepository extends JpaRepository<Crypto, Long> {
     Page<Crypto> findAll(Pageable pageable);
     @Query("SELECT c FROM Crypto c ORDER BY c.currentPrice DESC")
     List<Crypto> findTop20ByOrderByCurrentPriceDesc(Pageable pageable);
+    Float findCryptoCurrentPriceById(Long cryptoId);
 }
