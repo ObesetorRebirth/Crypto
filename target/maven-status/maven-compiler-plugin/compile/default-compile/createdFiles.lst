@@ -13,6 +13,7 @@ com\example\Crypto\Entities\Crypto.class
 com\example\Crypto\Configs\WebConfig.class
 com\example\Crypto\Entities\Transaction.class
 com\example\Crypto\Mappers\TransactionMapper.class
+com\example\Crypto\Configs\WebSocket\KrakenWebSocket$1.class
 com\example\Crypto\Mappers\UserMapperImpl.class
 com\example\Crypto\CryptoApplication.class
 com\example\Crypto\Repositories\UserCryptoRepository.class
