@@ -21,11 +21,12 @@ public class CryptoService {
     private final CryptoMapper cryptoMapper;
 
     public void updateCryptoPrice(String symbol, Float newPrice) {
-        Optional<Crypto> cryptoOpt = cryptoRepository.findByCryptoName(symbol);
-        cryptoOpt.ifPresent(crypto -> {
+        Optional<Crypto> optionalCrypto = cryptoRepository.findBySymbol(symbol);
+        if (optionalCrypto.isPresent()) {
+            Crypto crypto = optionalCrypto.get();
             crypto.setCurrentPrice(newPrice);
             cryptoRepository.save(crypto);
-        });
+        }
     }
 
     public Crypto getCryptoById(Long cryptoId){
@@ -33,7 +34,7 @@ public class CryptoService {
     }
 
     public void updateOrCreateCrypto(String symbol, Float newPrice) {
-        Optional<Crypto> cryptoOpt = cryptoRepository.findByCryptoName(symbol);
+        Optional<Crypto> cryptoOpt = cryptoRepository.findBySymbol(symbol);
         Crypto crypto = cryptoOpt.orElse(createCrypto(symbol, newPrice));
         crypto.setCurrentPrice(newPrice);
         cryptoRepository.save(crypto);

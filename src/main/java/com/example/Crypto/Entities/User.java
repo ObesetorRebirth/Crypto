@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +23,7 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Setter
     @NotNull
     @Column(name = "balance")
     private Double balance;

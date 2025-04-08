@@ -26,7 +26,7 @@ public class UserCryptoController {
     }
 
     @GetMapping(value = "/{userId}/{cryptoId}")
-    public ResponseEntity<UserCryptoDTO> getSpecificHoldingForUser(@PathVariable Long userId, @PathVariable Long cryptoId) {
+    public ResponseEntity<UserCrypto> getSpecificHoldingForUser(@PathVariable Long userId, @PathVariable Long cryptoId) {
         var holding = userCryptoService.getHolding(userId, cryptoId);
         return new ResponseEntity<>(holding, HttpStatus.OK);
     }

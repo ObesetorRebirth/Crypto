@@ -9,12 +9,9 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
     @Mapping(target = "username", source = "userDTO.username")
-    @Mapping(target = "balance", source = "userDTO.balance")
-    @Mapping(target = "id",source = "userId")
-    User convertDtoToEntity(UserDTO userDTO, Long userId);
+    User convertDtoToEntity(UserDTO userDTO);
 
     @Mapping(target = "username",source = "user.username")
-    @Mapping(target = "balance",source = "user.balance")
     UserDTO convertEntityToDto(User user);
 }
 

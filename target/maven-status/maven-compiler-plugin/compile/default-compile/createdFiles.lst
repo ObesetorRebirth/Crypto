@@ -32,6 +32,7 @@ com\example\Crypto\Mappers\UserCryptoMapperImpl.class
 com\example\Crypto\Repositories\UserRepository.class
 com\example\Crypto\Repositories\CryptoRepository.class
 com\example\Crypto\Controllers\TransactionController.class
+com\example\Crypto\CryptoSeeder.class
 com\example\Crypto\Repositories\TransactionRepository.class
 com\example\Crypto\Controllers\UserController.class
 com\example\Crypto\Controllers\UserCryptoController.class

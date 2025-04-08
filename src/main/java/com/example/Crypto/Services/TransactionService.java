@@ -40,12 +40,12 @@ public class TransactionService {
 
         double userBalance = user.getBalance();
         double neededBalance = cryptoRepository.findCryptoCurrentPriceById(cryptoId)*quantity;
-        double newBalance;
+
         if(doubleComparator(neededBalance,userBalance)){
             throw new ArithmeticException("Not enough balance");
         }
 
-       newBalance = userBalance - neededBalance;
+       double newBalance = userBalance - neededBalance;
         user.setBalance(newBalance);
 
         userCryptoService.addToHoldings(userId,cryptoId,quantity);
@@ -67,7 +67,9 @@ public class TransactionService {
             throw new ArithmeticException("Not enough Crypto in balance");
 
         var price = crypto.getCurrentPrice();
-        var newBalance = price*quantity;
+        var addBalance = price*quantity;
+
+        double newBalance = user.getBalance() + addBalance;
         user.setBalance(newBalance);
 
         double remainingQuantity = holding.getQuantity() - quantity;
@@ -142,7 +144,7 @@ public class TransactionService {
 
     private Transaction saveTransactionToDatabase(TransactionDTO transactionDTO, Long transactionId){
         var transaction = transactionMapper.convertDtoToEntity(transactionDTO,transactionId);
-        return transactionRepository.saveAndFlush(transaction);
+        return transactionRepository.save(transaction);
     }
 
     private void createTransaction(Long userId, Long cryptoId, Transaction.TransactionType transactionType, Double quantity, Double priceAtTransaction) {
@@ -156,11 +158,11 @@ public class TransactionService {
                 LocalDateTime.now()
         );
 
-        Transaction transaction = saveTransactionToDatabase(transactionDTO, null);
+        Transaction transaction = transactionMapper.convertDtoToEntity(transactionDTO, null);
 
         transaction.setUser(userRepository.getReferenceById(userId));
         transaction.setCrypto(cryptoRepository.getReferenceById(cryptoId));
 
-        transactionRepository.save(transaction);
+        transactionRepository.saveAndFlush(transaction);
     }
 }

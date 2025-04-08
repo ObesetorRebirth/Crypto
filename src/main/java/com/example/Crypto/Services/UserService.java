@@ -28,29 +28,29 @@ public class UserService {
         if(userFoundByName.isPresent())
             throw new IllegalStateException("Account with username" + username + "already exists.");
 
-        return saveUserToDatabase(userDTO,null);
+        return saveUserToDatabase(userDTO);
     }
 
     public Double getUserBalance(Long userId) {
         if(!userRepository.existsById(userId))
             throw new EntityNotFoundException("Account ID:" + userId);
-        return userRepository.findBalanceByUserId(userId);
+        return userRepository.findBalanceById(userId);
     }
 
     public void updateAccountBalance(Long userId,Float newBalance){
         if(!userRepository.existsById(userId))
             throw new EntityNotFoundException("Account ID:" + userId);
-        userRepository.setBalance(userId,newBalance);
+        userRepository.updateBalance(userId, newBalance.doubleValue());
     }
 
     public void resetAccountBalance(Long userId){
-        userRepository.setBalance(userId,10000.0f);
+        userRepository.updateBalance(userId, 10000.0);
     }
 
     //util
-    private User saveUserToDatabase(UserDTO userDTO, Long userId)
+    private User saveUserToDatabase(UserDTO userDTO)
     {
-        var user = userMapper.convertDtoToEntity(userDTO, userId);
+        var user = userMapper.convertDtoToEntity(userDTO);
         user.setBalance(10000.0);
         return userRepository.saveAndFlush(user);
     }

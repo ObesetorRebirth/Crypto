@@ -7,6 +7,7 @@ D:\Crypto\src\main\java\com\example\Crypto\Controllers\TransactionController.jav
 D:\Crypto\src\main\java\com\example\Crypto\Controllers\UserController.java
 D:\Crypto\src\main\java\com\example\Crypto\Controllers\UserCryptoController.java
 D:\Crypto\src\main\java\com\example\Crypto\CryptoApplication.java
+D:\Crypto\src\main\java\com\example\Crypto\CryptoSeeder.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\CryptoDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\KrakenDTO.java
 D:\Crypto\src\main\java\com\example\Crypto\DTOs\TransactionDTO.java

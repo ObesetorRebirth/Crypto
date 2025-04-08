@@ -2,7 +2,9 @@ package com.example.Crypto.Services;
 
 import com.example.Crypto.CompositeKeys.UserCryptoId;
 import com.example.Crypto.DTOs.UserCryptoDTO;
+import com.example.Crypto.Entities.Crypto;
 import com.example.Crypto.Entities.IntermediaryEntities.UserCrypto;
+import com.example.Crypto.Entities.User;
 import com.example.Crypto.Mappers.UserCryptoMapper;
 import com.example.Crypto.Repositories.CryptoRepository;
 import com.example.Crypto.Repositories.UserCryptoRepository;
@@ -24,23 +26,27 @@ public class UserCryptoService {
     private final UserRepository userRepository;
     private final CryptoRepository cryptoRepository;
 
-    public void addToHoldings(Long userId,Long cryptoId, Double quantity) {
+    public void addToHoldings(Long userId, Long cryptoId, Double quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
 
         if (holdingExists(userId, cryptoId)) {
-            throw new IllegalStateException("Holding already exists");
+            UserCrypto userCrypto = userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
+                    .orElseThrow(() -> new EntityNotFoundException("UserCrypto with userId " + userId + " and cryptoId " + cryptoId + " not found"));
+
+            userCrypto.setQuantity(userCrypto.getQuantity() + quantity);
+            userCryptoRepository.save(userCrypto);
+        } else {
+            UserCryptoId id = new UserCryptoId(userId, cryptoId);
+
+            UserCrypto userCrypto = new UserCrypto();
+            userCrypto.setId(id);
+            userCrypto.setUser(userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with this ID does not exist")));
+            userCrypto.setCrypto(cryptoRepository.findById(cryptoId).orElseThrow(() -> new EntityNotFoundException("Crypto with this ID does not exist")));
+            userCrypto.setQuantity(quantity);
+            userCryptoRepository.save(userCrypto);
         }
-
-        UserCryptoId id = new UserCryptoId(userId,cryptoId);
-
-        UserCrypto userCrypto = new UserCrypto();
-        userCrypto.setId(id);
-        userCrypto.setUser(userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User with this ID does not exist")));
-        userCrypto.setCrypto(cryptoRepository.findById(cryptoId).orElseThrow(()-> new EntityNotFoundException("Crypto with this ID does not exist")));
-        userCrypto.setQuantity(quantity);
-        userCryptoRepository.save(userCrypto);
     }
     public void subtractFromHoldings(Long userId,Long cryptoId,Double quantityToSubtract) {
         if (quantityToSubtract <= 0) {
@@ -72,28 +78,35 @@ public class UserCryptoService {
                 .map(userCryptoMapper::ConvertEntityToDto)
                 .toList();
     }
-    public UserCryptoDTO getHolding(Long userId, Long cryptoId) {
+    public UserCrypto getHolding(Long userId, Long cryptoId) {
         return userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
-                .map(userCryptoMapper::ConvertEntityToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Holding not found for userId: " + userId + " and cryptoId: " + cryptoId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("No holding found for userId %d and cryptoId %d", userId, cryptoId)
+                ));
     }
 
+    @Transactional
     public void updateHolding(Long userId, Long cryptoId, Double quantityToAdd) {
         if (quantityToAdd <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
 
-        if(!holdingExists(userId,cryptoId)) {
-            addToHoldings(userId,cryptoId,quantityToAdd);
-        }
-
         UserCrypto userCrypto = userCryptoRepository.findByUserIdAndCryptoId(userId, cryptoId)
-                .orElseThrow(() -> new EntityNotFoundException("UserCrypto with userId " + userId + " and cryptoId " + cryptoId + " not found"));
+                .orElseGet(() -> {
+                    User user = userRepository.findById(userId).orElseThrow(() ->
+                            new EntityNotFoundException("User with ID " + userId + " not found"));
+                    Crypto crypto = cryptoRepository.findById(cryptoId).orElseThrow(() ->
+                            new EntityNotFoundException("Crypto with ID " + cryptoId + " not found"));
 
-        Double balance = userCrypto.getQuantity();
-        Double newBalance = quantityToAdd + balance;
+                    UserCrypto newHolding = new UserCrypto();
+                    newHolding.setId(new UserCryptoId(userId, cryptoId));
+                    newHolding.setUser(user);
+                    newHolding.setCrypto(crypto);
+                    newHolding.setQuantity(0.0);
+                    return newHolding;
+                });
 
-        userCrypto.setQuantity(newBalance);
+        userCrypto.setQuantity(userCrypto.getQuantity() + quantityToAdd);
         userCryptoRepository.save(userCrypto);
     }
 

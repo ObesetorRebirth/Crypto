@@ -1,7 +1,7 @@
 package com.example.Crypto.Configs.WebSocket;
 
-import com.example.Crypto.DTOs.KrakenDTO;
 import com.example.Crypto.Services.CryptoService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.java_websocket.client.WebSocketClient;
@@ -23,15 +23,11 @@ public class KrakenWebSocket {
     public KrakenWebSocket(CryptoService cryptoService) {
         this.cryptoService = cryptoService;
         this.objectMapper = new ObjectMapper();
-        // Configure ObjectMapper to be more lenient with unknown properties and types
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        this.objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        this.objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
     }
 
     public void connect() {
         try {
-            // Create a new client instance each time we connect
             client = new WebSocketClient(new URI("wss://ws.kraken.com/v2")) {
                 @Override
                 public void onOpen(ServerHandshake handshake) {
@@ -42,28 +38,34 @@ public class KrakenWebSocket {
                 @Override
                 public void onMessage(String message) {
                     try {
+                        // Log the raw message
                         System.out.println("Received message: " + message);
 
-                        // Check if it's a status update or error message
-                        if (message.contains("\"status\"") || message.contains("\"error\"")) {
-                            // Just log it and don't try to process as ticker data
+                        JsonNode json = objectMapper.readTree(message);
+
+                        // Only handle messages with type "update" and channel "ticker"
+                        if (!json.has("type") || !json.has("channel") ||
+                                !"update".equals(json.get("type").asText()) ||
+                                !"ticker".equals(json.get("channel").asText())) {
                             return;
                         }
 
-                        KrakenDTO ticker = objectMapper.readValue(message, KrakenDTO.class);
+                        // Make sure "data" is an array
+                        JsonNode dataArray = json.get("data");
+                        if (dataArray != null && dataArray.isArray()) {
+                            for (JsonNode ticker : dataArray) {
+                                String symbol = ticker.has("symbol") ? ticker.get("symbol").asText() : null;
+                                Float lastPrice = ticker.has("last") ? (float) ticker.get("last").asDouble() : null;
 
-                        // Process only if it's a ticker update with price data
-                        if ("ticker".equals(ticker.channel) && "update".equals(ticker.type) &&
-                                ticker.symbol != null && ticker.getPrice() != null) {
-
-                            String symbol = ticker.symbol;
-                            Float price = ticker.getPrice();
-
-                            System.out.println("Updating price for " + symbol + ": " + price);
-                            cryptoService.updateCryptoPrice(symbol, price);
+                                if (symbol != null && lastPrice != null) {
+                                    System.out.println("Updating price for " + symbol + ": " + lastPrice);
+                                    cryptoService.updateCryptoPrice(symbol, lastPrice);
+                                }
+                            }
                         }
+
                     } catch (Exception e) {
-                        System.err.println("Failed to parse message: " + e.getMessage());
+                        System.err.println("Failed to process message: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -71,8 +73,6 @@ public class KrakenWebSocket {
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
                     System.out.println("WebSocket Closed: " + reason);
-
-                    // Attempt to reconnect after a delay
                     if (remote) {
                         try {
                             Thread.sleep(5000);
@@ -97,39 +97,21 @@ public class KrakenWebSocket {
 
     private void subscribe() {
         if (client != null && client.isOpen()) {
-            // Subscribe to top 20 cryptocurrencies
             String subscriptionMessage = """
             {
               "method": "subscribe",
               "params": {
                 "channel": "ticker",
                 "symbol": [
-                    "XBT/USDT",  // Bitcoin
-                    "ETH/USDT",  // Ethereum
-                    "SOL/USDT",  // Solana
-                    "XRP/USDT",  // Ripple
-                    "ADA/USDT",  // Cardano
-                    "DOT/USDT",  // Polkadot
-                    "DOGE/USDT", // Dogecoin
-                    "AVAX/USDT", // Avalanche
-                    "LINK/USDT", // Chainlink
-                    "LTC/USDT",  // Litecoin
-                    "UNI/USDT",  // Uniswap
-                    "ATOM/USDT", // Cosmos
-                    "MATIC/USDT", // Polygon
-                    "ALGO/USDT", // Algorand
-                    "FIL/USDT",  // Filecoin
-                    "TRX/USDT",  // TRON
-                    "XTZ/USDT",  // Tezos
-                    "AAVE/USDT", // Aave
-                    "EOS/USDT",  // EOS
-                    "BCH/USDT"   // Bitcoin Cash
+                  "BTC/USD", "ETH/USD", "SOL/USD", "ADA/USD", "XRP/USD", "DOGE/USD", "DOT/USD", "LTC/USD", "AVAX/USD", "BNB/USD",
+                  "LINK/USD", "MATIC/USD", "ATOM/USD", "TRX/USD", "ETC/USD", "UNI/USD", "BCH/USD", "XLM/USD", "NEAR/USD", "FIL/USD"
                 ]
               },
-              "req_id": 1
+              "req_id": 123
             }
             """;
 
+            System.out.println("Sent subscription message: " + subscriptionMessage);
             client.send(subscriptionMessage);
         }
     }
