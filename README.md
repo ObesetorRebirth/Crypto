@@ -13,7 +13,7 @@ This is the **Java Spring Boot backend** for a real-time crypto trading simulato
   - Spring WebSocket
   - Spring Data JPA
 - **Kraken WebSocket Integration**
-- **MySQL Database** (instead of PostgreSQL)
+- **MySQL Database**
 - **Docker** support
 
 ---
@@ -50,7 +50,7 @@ mvn install -DskipTests
 
 Before running the application, ensure that you have the necessary configurations in place:
 
-- **Database Configuration**: This project uses **MySQL** as the database. 
+- **Database Configuration**: This project uses MySQL as the database. 
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/crypto_db
