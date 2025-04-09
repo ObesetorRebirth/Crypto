@@ -43,7 +43,7 @@ cd crypto-backend
 Make sure you have **Java 17** or higher installed. If you're using Maven, build the project with the following command:
 
 ```bash
-mvn clean install
+mvn install -DskipTests
 ```
 
 ### 3. Configure the Application
